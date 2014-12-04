@@ -1,0 +1,20 @@
+{
+  "name": "ChristophHAuff/silverstripe-responsive-gallery",
+  "description": "A responsive gallery module for silverstripe",
+  "type": "silverstripe-module",
+  "keywords": ["silverstripe", "gallery", "responsive", "photogallery", "imagegallery", "photo", "image"],
+  "license": "",
+  "authors": [{
+    "name": "Christoph Hauff",
+    "email": "hauff@itlooks.de"
+  }],
+  "require": {
+    "silverstripe/framework": "3.1.*",
+    "silverstripe/cms": "3.1.*",
+    "colymba/gridfield-bulk-editing-tools": "*",
+    "undefinedoffset/sortablegridfield" : "dev-master"
+  },
+	"extra": {
+		"installer-name": "responsive-gallery"
+	}
+}

@@ -1,0 +1,6 @@
+de_DE:
+  ResponsiveGallery:
+    FOLDER_LABEL: 'Zielordner für Bilduploads'
+    GALLERY_IMAGE: 'Galerie-Bild'
+    IMAGE_TITLE: 'Bild-Titel'
+    IMAGE_TEXT: 'Bild-Text'

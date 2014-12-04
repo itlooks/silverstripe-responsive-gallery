@@ -1,0 +1,9 @@
+.responsive-gallery.links a {
+    float: left;
+    display: block;
+}
+
+.blueimp-gallery-carousel {
+  margin: 0 auto !important;
+  box-shadow: none !important;
+}

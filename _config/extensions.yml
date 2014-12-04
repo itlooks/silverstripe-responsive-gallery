@@ -1,0 +1,6 @@
+---
+Name: ResponsiveGalleryExtensions
+---
+ResponsiveGalleryPage:
+  extensions:
+    - ResponsiveGalleryExtension
