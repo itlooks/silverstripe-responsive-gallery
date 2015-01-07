@@ -16,6 +16,12 @@ class ResponsiveGalleryExtension extends DataExtension {
         'GalleryImages' => 'ResponsiveGalleryImage'
     );
 
+    static $many_many_extraFields = array( 
+	    'GalleryImages' => array( 
+		    'SortOrder' => "Int" 
+	    )
+    );
+
     /**
      * Handle requirements of an Responsive Gallery object 
      *
@@ -58,12 +64,12 @@ JS
         $folderObject = Folder::find('responsive-gallery');
 
         if ($this->owner->ID > 0) {
-
             $gridFieldConfig = GridFieldConfig_RelationEditor::create()->addComponents(
                 new GridFieldEditButton(),
                 new GridFieldDeleteAction(),
                 new GridFieldDetailForm(),
-                new GridFieldBulkUpload('GalleryImage')
+                new GridFieldBulkUpload('GalleryImage'),
+                new GridFieldSortableRows('SortOrder')
             );
 
             $gridFieldConfig->getComponentByType('GridFieldBulkUpload')
@@ -86,8 +92,6 @@ JS
                     )
                 )
             );
-            
-            $folderField->setTreeBaseID($folderObject->ID);
         }
 
         return $fields;
@@ -103,7 +107,9 @@ JS
             return "responsive-gallery";
         }
         
-        return $this->getSettedFolderName();
+        $uploadFolder = $this->owner->UploadFolder()->Filename;
+        $uploadFolder = str_replace("assets/", "", $uploadFolder);
+        return $uploadFolder;
     }
 
     /**
@@ -114,15 +120,6 @@ JS
      */
     public function useDefaultUploadFolder() {
         return ($this->owner->UploadFolder()->ID == 0);
-    }
-
-    /**
-     * Get the folder name of configured upload folder
-     *
-     * @return string
-     */
-    public function getSettedFolderName() {
-        return "responsive-gallery/".$this->owner->UploadFolder()->getTitle();
     }
 
     /**

@@ -3,7 +3,6 @@
 class ResponsiveGalleryImage extends DataObject {
 
     private static $db = array(
-        'SortOrder' => 'Int',
         'Title' => 'Varchar',
         'Text' => 'Text'
     );
