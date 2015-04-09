@@ -78,15 +78,27 @@ JS
         $aFields = array();
 
         $aFields[] = new HeaderField(
-            "Choose your desired image source"
+            _t(
+                'ResponsiveGallery.SOURCE_HEADER',
+                'Choose your desired image source'
+            )
         );
 
         $aFields[] = new OptionsetField(
             "Source",
-            "Source",
+            _t(
+                'ResponsiveGallery.SOURCE_LABEL',
+                'Source'
+            ),
             array(
-                "sf" => "Source Folder",
-                "dl" => "Data List",
+                "sf" => _t(
+                    'ResponsiveGallery.SOURCEFOLDER_LABEL',
+                    'Source Folder'
+                ),
+                "dl" => _t(
+                    'ResponsiveGallery.DATALIST_LABEL',
+                    'Data List'
+                ),
             ),
             "sf"
         );
@@ -174,7 +186,7 @@ JS
                             '<div class="field">'.
                             '<p><span class="info-message">'.
                             _t(
-                                'ResponsiveGallery.NOSELECTEDFOLDERINFO',
+                                'ResponsiveGallery.NOSELECTEDFOLDER_INFO',
                                 'Please select a folder that contains the images to be displayed in this gallery.'
                             ).
                             '</p></div>'
@@ -194,7 +206,7 @@ JS
                         ).
                         '</span><br/>'.
                         _t(
-                            'ResponsiveGallery.SELECTSOURCEINFO',
+                            'ResponsiveGallery.SELECTSOURCE_INFO',
                             'Then click on save button below, to be able to configure this gallery.'
                         ).
                         '</p></div>'
@@ -202,9 +214,11 @@ JS
             }
         }
         
-        $fields->findOrMakeTab('Root.Gallery');
+        $fields->findOrMakeTab(
+            'Root.'._t('ResponsiveGallery.GALLERYIMAGES_TAB', 'Gallery Images')
+        );
         $fields->addFieldsToTab(
-            'Root.Gallery',
+            'Root.'._t('ResponsiveGallery.GALLERYIMAGES_TAB', 'Gallery Images'),
             $aFields
         );
 
