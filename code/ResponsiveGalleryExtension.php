@@ -133,7 +133,7 @@ JS
                     $aFields[] = new GridField(
                         "GalleryImages",
                         _t('ResponsiveGallery.IMAGES_LABEL', 'Images'),
-                        $this->sortedGalleryImages(),
+                        $this->getImages(),
                         $oGridFieldConfig
                     );
 
