@@ -1,58 +1,30 @@
 <?php
 
+/**
+ * Responsive gallery page, to be extended by ResponsiveGalleryExtension class
+ *
+ * @package responsive-gallery
+ * @author Christoph Hauff <hauff@itlooks.de>
+ */
 class ResponsiveGalleryPage extends Page {
 
     /**
-     * @var array
+     * @var string
      */
-    public static $db = array();
-
-    /**
-     * @var array
-     */
-    public static $has_one = array();
-
-    /**
-     * @var array
-     */
-    public static $has_many = array();
-
+	  private static $description = 'Adds a customizable image gallery page.';
+	  
     /**
      * @var string
      */
-    static $singular_name = 'Galerie Seite';
-
-    /**
-     * @var string
-     */
-    static $plural_name = 'Galerie Seiten';
-
-    /**
-     * @var string
-     */
-    public static $description = 'Seite mit einer Bildergalerie.';
-
-    /**
-     * @var string
-     */
-    private static $icon = 'mysite/images/sitetree/ResponsiveGalleryPage.png';
-
-    /**
-     * Standard function to generate cms-form
-     * 
-     * @return FieldSet
-     */
-    public function getCMSFields() {
-        $fields = parent::getCMSFields();
-        return $fields;
-    }
+    private static $icon = "responsive-gallery/images/sitetree/ResponsiveGalleryPage.png";
 }
 
 class ResponsiveGalleryPage_Controller extends Page_Controller {
 
     /**
      * Get requirements of a single responsive gallery object, id is needed to create unique html boxes to handle
-     *  multiple galleries on a single page. 
+     * multiple galleries on a single page.
+     * {@inheritDoc}
      */
 	  public function init() {
           parent::init();
