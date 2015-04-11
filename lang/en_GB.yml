@@ -1,4 +1,4 @@
-de_DE:
+en_GB:
   ResponsiveGallery:
     GALLERYIMAGES_TAB: 'Gallery Images'
     SOURCE_HEADER: 'Choose your desired image source'
@@ -18,3 +18,10 @@ de_DE:
     GALLERY_IMAGE: 'Galerie-Bild'
     IMAGE_TITLE: 'Bild-Titel'
     IMAGE_TEXT: 'Bild-Text'
+  ResponsiveGalleryPage:
+    PLURALNAME: 'Gallery Pages'
+    SINGULARNAME: 'Gallery Page'
+    DESCRIPTION: 'Adds a customizable image gallery page.'
+  ResponsiveGalleryImage:
+    PLURALNAME: 'Gallery Image'
+    SINGULARNAME: 'Gallery Image'

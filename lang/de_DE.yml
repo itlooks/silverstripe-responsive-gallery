@@ -18,3 +18,10 @@ de_DE:
     GALLERY_IMAGE: 'Galerie-Bild'
     IMAGE_TITLE: 'Bild-Titel'
     IMAGE_TEXT: 'Bild-Text'
+  ResponsiveGalleryPage:
+    PLURALNAME: 'Galerie Seiten'
+    SINGULARNAME: 'Galerie Seite'
+    DESCRIPTION: 'Seite mit einer Bilder-Galerie'
+  ResponsiveGalleryImage:
+    PLURALNAME: 'Galerie-Bilder'
+    SINGULARNAME: 'Galerie-Bild'
