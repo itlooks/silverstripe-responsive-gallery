@@ -1,5 +1,5 @@
 {
-  "name": "itLooks/silverstripe-responsive-gallery",
+  "name": "itlooks/silverstripe-responsive-gallery",
   "description": "A responsive gallery module for silverstripe",
   "type": "silverstripe-module",
   "keywords": ["silverstripe", "gallery", "responsive", "photogallery", "imagegallery", "photo", "image"],
