@@ -1,6 +1,7 @@
 de_DE:
-  ResponsiveGallery:
+  ResponsiveGalleryExtension:
     GALLERYIMAGES_TAB: 'Galerie Bilder'
+    GALLERYSETTINGS_TAB: 'Galerie Einstellungen'
     SOURCE_HEADER: 'Quelle der Galerie-Bilder auswählen'
     SOURCE_LABEL: 'Quelle'
     SOURCEFOLDER_LABEL: 'Bildverzeichnis aus der Dateiverwaltung'
@@ -18,6 +19,22 @@ de_DE:
     GALLERY_IMAGE: 'Galerie-Bild'
     IMAGE_TITLE: 'Bild-Titel'
     IMAGE_TEXT: 'Bild-Text'
+    COMPONENTSETTINGS_LABEL: 'Komponenten darstellen'
+    SHOWALLCOMPONENTS_LABEL: 'Alle Komponenten darstellen'
+    SHOWCUSTOMIZEDCOMPONENTS_LABEL: 'Benutzerdefiniert ...'
+    EMPTY_SETTINGS_WARNING: 'Achtung: Bitte wählen Sie mindestens eine Option aus! (Carousel oder Bildliste anzeigen)'
+    SETTINGS_CAROUSEL_HEADER: 'Carousel Einstellungen'
+    SETTINGS_SHOWCAROUSEL_LABEL: 'Carousel anzeigen'
+    SETTINGS_SHOWCAROUSELTITLE_LABEL: 'Carousel Bild-Titel anzeigen'
+    SETTINGS_SHOWCAROUSELPREVNEXT_LABEL: 'Carousel Vor-/Zurück-Buttons anzeigen'
+    SETTINGS_SHOWCAROUSELPLAYPAUSE_LABEL: 'Carousel Play/Pause-Button anzeigen'
+    SETTINGS_SHOWCAROUSELINDICATOR_LABEL: 'Indikator-Liste am unteren Rand des Carousels anzeigen'
+    SETTINGS_IMAGELIST_HEADER: 'Bild-Liste und Full-Screen-Mode Einstellungen'
+    SETTINGS_SHOWMODAL_LABEL: 'Bild-Liste anzeigen und Modal (Fullscreen) aktivieren'
+    SETTINGS_SHOWMODALTITLE_LABEL: 'Modal Titel anzeigen'
+    SETTINGS_SHOWMODALPREVNEXT_LABEL: 'Modal Vor-/Zurück-Buttons anzeigen'
+    SETTINGS_SHOWMODALPLAYPAUSE_LABEL: 'Modal Play/Pause-Button anzeigen'
+    SETTINGS_SHOWMODALINDICATOR_LABEL: 'Indikator-Liste am unteren Rand der Bilder im Full-Screen-Mode anzeigen'
   ResponsiveGalleryPage:
     PLURALNAME: 'Galerie Seiten'
     SINGULARNAME: 'Galerie Seite'

@@ -2,31 +2,30 @@
 
 class ResponsiveGalleryExtension extends DataExtension {
 
-    /**
-     * @var array
-     */
     public static $db = array(
         'Source' => 'Varchar(2)',
+        'ShowAllComponents' => 'Varchar(1)',
+        'DisplayCarousel' => 'Boolean',
+        'DisplayCarouselTitle' => 'Boolean',
+        'DisplayCarouselPrevNext' => 'Boolean',
+        'DisplayCarouselPlayPause' => 'Boolean',
+        'DisplayCarouselIndicator' => 'Boolean',
+        'DisplayModal' => 'Boolean',
+        'DisplayModalTitle' => 'Boolean',
+        'DisplayModalPrevNext' => 'Boolean',
+        'DisplayModalPlayPause' => 'Boolean',
+        'DisplayModalIndicator' => 'Boolean',
     );
 
-    /**
-     * @var array
-     */
     public static $has_one = array(
         'UploadFolder' => 'Folder',
         'SourceFolder' => 'Folder',
     );
 
-    /**
-     * @var array
-     */
     public static $many_many = array(
         'GalleryImages' => 'ResponsiveGalleryImage',
     );
 
-    /**
-     * @var array
-     */
     static $many_many_extraFields = array( 
 	      'GalleryImages' => array( 
 		        'SortOrder' => "Int",
@@ -34,11 +33,11 @@ class ResponsiveGalleryExtension extends DataExtension {
     );
 
     /**
-     * Handle requirements of an Responsive Gallery object 
+     * Handle requirements of a Responsive Gallery object 
      *
      * @param $id id of calling dataObject or Page
      */
-    public static function getRequirements($id) {
+    public static function getRequirements($iId) {
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery.min.css");
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-indicator.css");
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-video.css");
@@ -50,36 +49,45 @@ class ResponsiveGalleryExtension extends DataExtension {
         Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/jquery.blueimp-gallery.min.js");
         Requirements::customScript(<<<JS
 blueimp.Gallery(
-    document.getElementById('links{$id}').getElementsByTagName('a'),
+    document.getElementById('links{$iId}').getElementsByTagName('a'),
     {
-        container: '#blueimp-gallery-carousel{$id}',
+        container: '#blueimp-gallery-carousel{$iId}',
         carousel: true
     }
 );
 JS
           ,
-          $id
+          $iId
         );
     }
 
-    /**
-     * Standard function to generate cms-form
-     *
-     * @param \FieldSet
-     * 
-     * @return \FieldSet
-     */
-    public function updateCMSFields(FieldList $fields) {
-        parent::updateCMSFields($fields);
-
-        // create assets/responsive-gallery folder if not exists
+    public function updateCMSFields(\FieldList $oFields) {
         Folder::find_or_make('responsive-gallery');
+        $aGalleryImagesFields = array();
 
-        $aFields = array();
+        if ($this->owner->ID > 0) {
+            $oFields->addFieldsToTab(
+                'Root.'._t('ResponsiveGalleryExtension.GALLERYIMAGES_TAB', 'Gallery Images'),
+                $this->getFieldsForImagesTab()
+            );
+
+            $oFields->addFieldsToTab(
+                'Root.'._t('ResponsiveGalleryExtension.GALLERYSETTINGS_TAB', 'Gallery Settings'),
+                $this->getFieldsForSettingsTab()
+            );
+        }
+    }
+
+    /**
+     * Returns array of fields to be added to Gallery Images Tab
+     *
+     * @return array
+     */
+    public function getFieldsForImagesTab() {
 
         $aFields[] = new HeaderField(
             _t(
-                'ResponsiveGallery.SOURCE_HEADER',
+                'ResponsiveGalleryExtension.SOURCE_HEADER',
                 'Choose your desired image source'
             )
         );
@@ -87,148 +95,304 @@ JS
         $aFields[] = new OptionsetField(
             "Source",
             _t(
-                'ResponsiveGallery.SOURCE_LABEL',
+                'ResponsiveGalleryExtension.SOURCE_LABEL',
                 'Source'
             ),
             array(
                 "sf" => _t(
-                    'ResponsiveGallery.SOURCEFOLDER_LABEL',
+                    'ResponsiveGalleryExtension.SOURCEFOLDER_LABEL',
                     'Source Folder'
                 ),
                 "dl" => _t(
-                    'ResponsiveGallery.DATALIST_LABEL',
+                    'ResponsiveGalleryExtension.DATALIST_LABEL',
                     'Data List'
                 ),
             ),
             "sf"
         );
 
-        if ($this->owner->ID > 0) {
-            switch($this->owner->Source) {
-                case "dl":
-                    $oGridFieldConfig = GridFieldConfig_RelationEditor::create()->addComponents(
-                        new GridFieldEditButton(),
-                        new GridFieldDeleteAction(),
-                        new GridFieldDetailForm(),
-                        new GridFieldBulkUpload('GalleryImage'),
-                        new GridFieldSortableRows('SortOrder')
-                    );
+        switch($this->owner->Source) {
+            case "dl":
+                $oGridFieldConfig = GridFieldConfig_RelationEditor::create()->addComponents(
+                    new GridFieldEditButton(),
+                    new GridFieldDeleteAction(),
+                    new GridFieldDetailForm(),
+                    new GridFieldBulkUpload('GalleryImage'),
+                    new GridFieldSortableRows('SortOrder')
+                );
 
-                    $oGridFieldConfig->getComponentByType('GridFieldBulkUpload')
-                        ->setUfSetup('setFolderName', $this->getUploadFolder())
-                        ->setUfConfig('sequentialUploads', true);
+                $oGridFieldConfig->getComponentByType('GridFieldBulkUpload')
+                    ->setUfSetup('setFolderName', $this->getUploadFolder())
+                    ->setUfConfig('sequentialUploads', true);
 
-                    $aFields[] = new HeaderField(
-                        _t(
-                            'ResponsiveGallery.DATALIST_HEADER',
-                            'Create your image list'
-                        )
-                    );
+                $aFields[] = new HeaderField(
+                    _t(
+                        'ResponsiveGalleryExtension.DATALIST_HEADER',
+                        'Create your image list'
+                    )
+                );
 
+                $aFields[] = LiteralField::create(
+                    "DataListInfo",
+                    '<div class="field"><p>'.
+                    _t(
+                        'ResponsiveGalleryExtension.DATALIST_INFO',
+                        'You can select images from files or upload images and add them to your customized image list. '.
+                        'Use "Target Folder" field to select a default target folder for your image uploads.'
+                    ).
+                    '</p></div>'
+                );
+
+                $aFields[] = new TreeDropdownField(
+                    'UploadFolderID',
+                    _t('ResponsiveGalleryExtension.UPLOADFOLDER_LABEL', 'Target Folder'),
+                    'Folder'
+                );
+
+                $aFields[] = new GridField(
+                    "GalleryImages",
+                    _t('ResponsiveGalleryExtension.IMAGES_LABEL', 'Images'),
+                    $this->getImages(),
+                    $oGridFieldConfig
+                );
+
+                break;
+
+            case "sf":
+                $iImageCount = $this->countImages();
+
+                $aFields[] = new HeaderField(
+                    _t(
+                        'ResponsiveGalleryExtension.SOURCEFOLDER_HEADER',
+                        'Select source folder of gallery'
+                    )
+                );
+
+                $aFields[] = new TreeDropdownField(
+                    'SourceFolderID',
+                    _t('ResponsiveGalleryExtension.SOURCEFOLDER_LABEL', 'Source Folder'),
+                    'Folder'
+                );
+                
+                if($this->isSourcefolderSelected()) {
                     $aFields[] = LiteralField::create(
-                        "DataListInfo",
-                        '<div class="field"><p>'.
+                        "ImageCountInfo",
+                        '<div class="field">'.
+                        '<p class="info-message">'.
                         _t(
-                            'ResponsiveGallery.DATALIST_INFO',
-                            'You can select images from files or upload images and add them to your customized image list. '.
-                            'Use "Target Folder" field to select a default target folder for your image uploads.'
+                            'ResponsiveGalleryExtension.IMAGECOUNTINFO',
+                            'There are {imageCount} images in your selected folder.',
+                            'The number of images in this gallery',
+                            array('imageCount' => $iImageCount)
                         ).
                         '</p></div>'
                     );
-
-                    $aFields[] = new TreeDropdownField(
-                        'UploadFolderID',
-                        _t('ResponsiveGallery.UPLOADFOLDER_LABEL', 'Target Folder'),
-                        'Folder'
-                    );
-
-                    $aFields[] = new GridField(
-                        "GalleryImages",
-                        _t('ResponsiveGallery.IMAGES_LABEL', 'Images'),
-                        $this->getImages(),
-                        $oGridFieldConfig
-                    );
-
-                    break;
-
-                case "sf":
-                    $iImageCount = $this->countImages();
-
-                    $aFields[] = new HeaderField(
-                        _t(
-                            'ResponsiveGallery.SOURCEFOLDER_HEADER',
-                            'Select source folder of gallery'
-                        )
-                    );
-
-                    $aFields[] = new TreeDropdownField(
-                        'SourceFolderID',
-                        _t('ResponsiveGallery.SOURCEFOLDER_LABEL', 'Source Folder'),
-                        'Folder'
-                    );
-                    
-                    if($this->isSourcefolderSelected()) {
-                        $aFields[] = LiteralField::create(
-                            "ImageCountInfo",
-                            '<div class="field">'.
-                            '<p class="info-message">'.
-                            _t(
-                                'ResponsiveGallery.IMAGECOUNTINFO',
-                                'There are {imageCount} images in your selected folder.',
-                                'The number of images in this gallery',
-                                array('imageCount' => $iImageCount)
-                            ).
-                            '</p></div>'
-                        );
-                    } else {
-                        $aFields[] = LiteralField::create(
-                            "NoSelectedFolderInfo",
-                            '<div class="field">'.
-                            '<p><span class="info-message">'.
-                            _t(
-                                'ResponsiveGallery.NOSELECTEDFOLDER_INFO',
-                                'Please select a folder that contains the images to be displayed in this gallery.'
-                            ).
-                            '</p></div>'
-                        );
-                    }
-
-                    break;
-                
-                default:
+                } else {
                     $aFields[] = LiteralField::create(
-                        "SelectSourceInfo",
+                        "NoSelectedFolderInfo",
                         '<div class="field">'.
                         '<p><span class="info-message">'.
                         _t(
-                            'ResponsiveGallery.SELECTSOURCEINFO_HEADER',
-                            'Please select your desired image source type in field above.'
-                        ).
-                        '</span><br/>'.
-                        _t(
-                            'ResponsiveGallery.SELECTSOURCE_INFO',
-                            'Then click on save button below, to be able to configure this gallery.'
+                            'ResponsiveGalleryExtension.NOSELECTEDFOLDER_INFO',
+                            'Please select a folder that contains the images to be displayed in this gallery.'
                         ).
                         '</p></div>'
                     );
-            }
+                }
+
+                break;
+            
+            default:
+                $aFields[] = LiteralField::create(
+                    "SelectSourceInfo",
+                    '<div class="field">'.
+                    '<p><span class="info-message">'.
+                    _t(
+                        'ResponsiveGalleryExtension.SELECTSOURCEINFO_HEADER',
+                        'Please select your desired image source type in field above.'
+                    ).
+                    '</span><br/>'.
+                    _t(
+                        'ResponsiveGalleryExtension.SELECTSOURCE_INFO',
+                        'Then click on save button below, to be able to configure this gallery.'
+                    ).
+                    '</p></div>'
+                );
         }
-        
-        $fields->findOrMakeTab(
-            'Root.'._t('ResponsiveGallery.GALLERYIMAGES_TAB', 'Gallery Images')
-        );
-        $fields->addFieldsToTab(
-            'Root.'._t('ResponsiveGallery.GALLERYIMAGES_TAB', 'Gallery Images'),
-            $aFields
+
+        return $aFields;
+    }
+    
+    /**
+     * Returns array of fields to be added to Gallery Settings Tab
+     *
+     * @return array
+     */
+    public function getFieldsForSettingsTab() {
+
+        $aFields = array(
+            new OptionsetField(
+                'ShowAllComponents',
+                _t(
+                    'ResponsiveGalleryExtension.COMPONENTSETTINGS_LABEL',
+                    'Display Components'
+                ),
+                $source = array(
+                    "1" => _t(
+                      'ResponsiveGalleryExtension.SHOWALLCOMPONENTS_LABEL',
+                      'Display all components'
+                    ),
+                    "0" => _t(
+                      'ResponsiveGalleryExtension.SHOWCUSTOMIZEDCOMPONENTS_LABEL',
+                      'Customized ...'
+                    ),
+                ),
+               $value = "1"
+            ),
         );
 
-        return $fields;
+        $aFields[] = DisplayLogicWrapper::create(
+            new LiteralField(
+                'EmptySettingsWarning',
+                '<p class="message warning">' . _t('ResponsiveGalleryExtension.EMPTY_SETTINGS_WARNING', 
+                'Warning: You should choose at least one option.')
+                . '</p>'
+            )
+        )->setName('EmptySettingsWarningWrapper')
+            ->hideIf("ShowAllComponents")->isEqualTo('1')
+            ->orIf("DisplayCarousel")->isChecked()
+            ->orIf("DisplayModal")->isChecked()
+            ->end();
+
+        $aFields[] = DisplayLogicWrapper::create(
+            HeaderField::create(
+                '<img src="'.RESPONSIVE_GALLERY_PATH.'/images/settings/show-carousel.png" title="Display Carousel?"> '.
+                _t(
+                    'ResponsiveGalleryExtension.SETTINGS_CAROUSEL_HEADER',
+                    'Carousel settings'
+                )
+            )
+        )->setName('SettingsCarouselHeaderWrapper')
+            ->displayIf("ShowAllComponents")->isEqualTo('0')->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayCarousel',
+            '<strong>'.
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWCAROUSEL_LABEL',
+                'Display Carousel'
+            ).
+            '</strong>'
+        )->displayIf("ShowAllComponents")->isEqualTo('0')->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayCarouselTitle',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWCAROUSELTITLE_LABEL',
+                'Display Carousel Title'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayCarousel')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayCarouselPrevNext',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWCAROUSELPREVNEXT_LABEL',
+                'Display Carousel Prev/Next Buttons'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayCarousel')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayCarouselPlayPause',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWCAROUSELPLAYPAUSE_LABEL',
+                'Display Carousel Play/Pause Button'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayCarousel')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayCarouselIndicator',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWCAROUSELINDICATOR_LABEL',
+                'Display Indicator List in Carousel Footer'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayCarousel')->isChecked()
+            ->end();
+
+        $aFields[] = DisplayLogicWrapper::create(
+            HeaderField::create(
+                '<img src="'.RESPONSIVE_GALLERY_PATH.'/images/settings/show-imagelist.png" title="Display image list and enable fullscreen mode?"> '.
+                _t(
+                    'ResponsiveGalleryExtension.SETTINGS_IMAGELIST_HEADER',
+                    'Image list and fullscreen settings'
+                )
+            )
+        )->setName('SettingsModalHeaderWrapper')
+            ->displayIf("ShowAllComponents")->isEqualTo('0')->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayModal',
+            '<strong>'.
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWMODAL_LABEL',
+                'Display Modal'
+            ).
+            '</strong>'
+        )->displayIf("ShowAllComponents")->isEqualTo('0')->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayModalTitle',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWMODALTITLE_LABEL',
+                'Display Modal Title'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayModal')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayModalPrevNext',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWMODALPREVNEXT_LABEL',
+                'Display Modal Prev/Next Buttons'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayModal')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayModalPlayPause',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWMODALPLAYPAUSE_LABEL',
+                'Display Modal Play/Pause Button'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayModal')->isChecked()
+            ->end();
+
+        $aFields[] = CheckboxField::create(
+            'DisplayModalIndicator',
+            _t(
+                'ResponsiveGalleryExtension.SETTINGS_SHOWMODALINDICATOR_LABEL',
+                'Display Modal Play/Pause Button'
+            )
+        )->displayIf("ShowAllComponents")->isEqualTo('0')
+            ->andIf('DisplayModal')->isChecked()
+            ->end();
+        
+        return $aFields;
     }
 
     /**
      * Get a sorted set of image objects
      *
-     * @return \DataList | \ManyManyList
+     * @return \DataList|\ManyManyList
      */
     public function getImages() {
         if($this->owner->Source == "sf") {

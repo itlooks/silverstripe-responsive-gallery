@@ -1,6 +1,7 @@
 en_GB:
-  ResponsiveGallery:
+  ResponsiveGalleryExtension:
     GALLERYIMAGES_TAB: 'Gallery Images'
+    GALLERYSETTINGS_TAB: 'Gallery Settings'
     SOURCE_HEADER: 'Choose your desired image source'
     SOURCE_LABEL: 'Source'
     SOURCEFOLDER_LABEL: 'Source Folder'
@@ -18,6 +19,22 @@ en_GB:
     GALLERY_IMAGE: 'Galerie-Bild'
     IMAGE_TITLE: 'Bild-Titel'
     IMAGE_TEXT: 'Bild-Text'
+    COMPONENTSETTINGS_LABEL: 'Display Components'
+    SHOWALLCOMPONENTS_LABEL: 'Display all components'
+    SHOWCUSTOMIZEDCOMPONENTS_LABEL: 'Customized ...'
+    EMPTY_SETTINGS_WARNING: 'Warning: You should choose at least one option'
+    SETTINGS_CAROUSEL_HEADER: 'Carousel settings'
+    SETTINGS_SHOWCAROUSEL_LABEL: 'Display Carousel'
+    SETTINGS_SHOWCAROUSELTITLE_LABEL: 'Display Carousel Title'
+    SETTINGS_SHOWCAROUSELPREVNEXT_LABEL: 'Display Carousel Prev/Next Buttons'
+    SETTINGS_SHOWCAROUSELPLAYPAUSE_LABEL: 'Display Carousel Play/Pause Button'
+    SETTINGS_SHOWCAROUSELINDICATOR_LABEL: 'Display Indicator List in Carousel Footer'
+    SETTINGS_IMAGELIST_HEADER: 'Image list and fullscreen settings'
+    SETTINGS_SHOWMODAL_LABEL: 'Display Modal'
+    SETTINGS_SHOWMODALTITLE_LABEL: 'Display Modal Title'
+    SETTINGS_SHOWMODALPREVNEXT_LABEL: 'Display Modal Prev/Next Buttons'
+    SETTINGS_SHOWMODALPLAYPAUSE_LABEL: 'Display Modal Play/Pause Button'
+    SETTINGS_SHOWMODALINDICATOR_LABEL: 'Display Indicator List in Footer on image in fullscreen mode'
   ResponsiveGalleryPage:
     PLURALNAME: 'Gallery Pages'
     SINGULARNAME: 'Gallery Page'
