@@ -1,34 +1,44 @@
-<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
-<div id="blueimp-gallery" class="blueimp-gallery">
-    <!-- The container for the modal slides -->
-    <div class="slides"></div>
-    <!-- Controls for the borderless lightbox -->
-    <h3 class="title"></h3>
-    <a class="prev">‹</a>
-    <a class="next">›</a>
-    <a class="close">×</a>
-    <a class="play-pause"></a>
-    <ol class="indicator"></ol>
-    <!-- The modal dialog, which will be used to wrap the lightbox content -->
-    <div class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body next"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left prev">
-                        <i class="glyphicon glyphicon-chevron-left"></i>
-                        Previous
-                    </button>
-                    <button type="button" class="btn btn-primary next">
-                        Next
-                        <i class="glyphicon glyphicon-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+          <% if $ShowAllComponents == '1' || $DisplayCarousel %>
+          <!-- Carousel -->
+          <div id="blueimp-gallery-carousel{$ID}" class="blueimp-gallery blueimp-gallery-carousel">
+              <div class="slides"></div>
+              <% if $ShowAllComponents == '1' || $DisplayCarouselTitle %><h3 class="title"></h3><% end_if %>
+              <% if $ShowAllComponents == '1' || $DisplayCarouselPrevNext %>
+              <a class="prev">‹</a>
+              <a class="next">›</a>
+              <% end_if %>
+              <% if $ShowAllComponents == '1' || $DisplayCarouselPlayPause %><a class="play-pause"></a><% end_if %>
+              <% if $ShowAllComponents == '1' || $DisplayCarouselIndicator %><ol class="indicator"></ol><% end_if %>
+          </div>
+          <!-- /Carousel -->
+          <% end_if %>
+
+          <% if $ShowAllComponents == '1' || $DisplayModal %>
+          <!-- Modal -->
+          <div id="blueimp-gallery{$ID}" class="blueimp-gallery blueimp-gallery-controls borderless" data-use-bootstrap-modal="false">
+            <div class="slides"></div>
+            <% if $ShowAllComponents == '1' || $DisplayModalTitle %><h3 class="title"></h3><% end_if %>
+            <% if $ShowAllComponents == '1' || $DisplayModalPrevNext %>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <% end_if %>
+            <a class="close">×</a>
+            <% if $ShowAllComponents == '1' || $DisplayCarouselPlayPause %><a class="play-pause"></a><% end_if %>
+            <% if $ShowAllComponents == '1' || $DisplayCarouselIndicator %><ol class="indicator"></ol><% end_if %>
+          </div>
+          <!-- /Modal -->
+          <% end_if %>
+
+          <div id="links{$ID}" class="responsive-gallery links <% if $ShowAllComponents != '1' %><% if $DisplayModal %><% else %>hide<% end_if %><% end_if %>">
+              <% loop $getImages %>
+              <% if $Up.Source == 'sf' %>
+              <a href="$URL" title="$Title" data-gallery="#blueimp-gallery{$Up.ID}">
+                  <img src="$CroppedImage(50, 50).URL" class="img-responsive" title="$Title">
+              </a>
+              <% else %>
+              <a href="$GalleryImage.URL" title="$Title" data-gallery="#blueimp-gallery{$Up.ID}">
+                  <img src="$GalleryImage.CroppedImage(50, 50).URL" class="img-responsive" title="$GalleryImage.Title">
+              </a>
+              <% end_if %>
+              <% end_loop %>
+          </div>
