@@ -1,6 +1,7 @@
 <?php
 
-class ResponsiveGalleryImage extends DataObject {
+class ResponsiveGalleryImage extends DataObject
+{
 
     private static $db = array(
         'Title' => 'Varchar',
@@ -22,7 +23,8 @@ class ResponsiveGalleryImage extends DataObject {
         'Text.Summary'
     );
 
-    public function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
         $fields->removeByName('SortOrder');
         $fields->removeByName('GalleryPageID');
