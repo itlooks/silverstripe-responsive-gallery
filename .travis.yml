@@ -35,4 +35,4 @@ before_script:
   - composer install
 
 script:
-  - vendor/bin/phpunit responsive-gallery/tests
+  - vendor/bin/phpunit responsive-gallery/tests/
