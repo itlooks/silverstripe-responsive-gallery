@@ -1,5 +1,7 @@
 # Silverstripe Responsive Gallery
 
+[![Build Status](https://travis-ci.org/itlooks/silverstripe-responsive-gallery.svg?branch=master)](https://travis-ci.org/itlooks/silverstripe-responsive-gallery)
+
 ## Description
 
 This module allows you to add and configure responsive galleries to your silverstripe website.
