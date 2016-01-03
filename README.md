@@ -1,11 +1,13 @@
 # Silverstripe Responsive Gallery
 
+[![Build Status](https://travis-ci.org/itlooks/silverstripe-responsive-gallery.svg?branch=master)](https://travis-ci.org/itlooks/silverstripe-responsive-gallery)
+
 ## Description
 
 This module allows you to add and configure responsive galleries to your silverstripe website.
 
 ## Requirements
-* Silverstripe 3.1 or above
+* Silverstripe 3.2 or above
 * [Silverstripe Display Logic Module](https://github.com/unclecheese/silverstripe-display-logic)
 * [Silverstripe SortableGridField Module](https://github.com/UndefinedOffset/SortableGridField)
 * [GridFieldBulkEditingTools](https://github.com/colymba/GridFieldBulkEditingTools)
