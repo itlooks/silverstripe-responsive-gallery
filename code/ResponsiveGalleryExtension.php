@@ -1,6 +1,7 @@
 <?php
 
-class ResponsiveGalleryExtension extends DataExtension {
+class ResponsiveGalleryExtension extends DataExtension
+{
 
     public static $db = array(
         'Source' => 'Varchar(2)',
@@ -26,10 +27,10 @@ class ResponsiveGalleryExtension extends DataExtension {
         'GalleryImages' => 'ResponsiveGalleryImage',
     );
 
-    static $many_many_extraFields = array( 
-	      'GalleryImages' => array( 
-		        'SortOrder' => "Int",
-	      )
+    public static $many_many_extraFields = array(
+          'GalleryImages' => array(
+                'SortOrder' => "Int",
+          )
     );
 
     /**
@@ -37,7 +38,8 @@ class ResponsiveGalleryExtension extends DataExtension {
      *
      * @param $id id of calling dataObject or Page
      */
-    public static function getRequirements($iId) {
+    public static function getRequirements($iId)
+    {
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery.min.css");
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-indicator.css");
         Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-video.css");
@@ -61,7 +63,8 @@ JS
         );
     }
 
-    public function updateCMSFields(\FieldList $oFields) {
+    public function updateCMSFields(\FieldList $oFields)
+    {
         Folder::find_or_make('responsive-gallery');
         $aGalleryImagesFields = array();
 
@@ -83,8 +86,8 @@ JS
      *
      * @return array
      */
-    public function getFieldsForImagesTab() {
-
+    public function getFieldsForImagesTab()
+    {
         $aFields[] = new HeaderField(
             _t(
                 'ResponsiveGalleryExtension.SOURCE_HEADER',
@@ -111,7 +114,7 @@ JS
             "sf"
         );
 
-        switch($this->owner->Source) {
+        switch ($this->owner->Source) {
             case "dl":
                 $oGridFieldConfig = GridFieldConfig_RelationEditor::create()->addComponents(
                     new GridFieldEditButton(),
@@ -174,7 +177,7 @@ JS
                     'Folder'
                 );
                 
-                if($this->isSourcefolderSelected()) {
+                if ($this->isSourcefolderSelected()) {
                     $aFields[] = LiteralField::create(
                         "ImageCountInfo",
                         '<div class="field">'.
@@ -228,8 +231,8 @@ JS
      *
      * @return array
      */
-    public function getFieldsForSettingsTab() {
-
+    public function getFieldsForSettingsTab()
+    {
         $aFields = array(
             new OptionsetField(
                 'ShowAllComponents',
@@ -254,7 +257,7 @@ JS
         $aFields[] = DisplayLogicWrapper::create(
             new LiteralField(
                 'EmptySettingsWarning',
-                '<p class="message warning">' . _t('ResponsiveGalleryExtension.EMPTY_SETTINGS_WARNING', 
+                '<p class="message warning">' . _t('ResponsiveGalleryExtension.EMPTY_SETTINGS_WARNING',
                 'Warning: You should choose at least one option.')
                 . '</p>'
             )
@@ -394,8 +397,9 @@ JS
      *
      * @return \DataList|\ManyManyList
      */
-    public function getImages() {
-        if($this->owner->Source == "sf") {
+    public function getImages()
+    {
+        if ($this->owner->Source == "sf") {
             return DataObject::get("Image", "ParentID = '".$this->owner->SourceFolderID."'");
         } else {
             return $this->owner->GalleryImages();
@@ -407,7 +411,8 @@ JS
      *
      * @return bool
      */
-    public function isSourcefolderSelected() {
+    public function isSourcefolderSelected()
+    {
         return ($this->owner->SourceFolderID > 0);
     }
 
@@ -416,7 +421,8 @@ JS
      *
      * @return int 
      */
-    public function countImages() {
+    public function countImages()
+    {
         return $this->getImages()->count();
     }
 
@@ -425,7 +431,8 @@ JS
      *
      * @return string
      */
-    public function getUploadFolder() {
+    public function getUploadFolder()
+    {
         if ($this->owner->UploadFolder()->ID == 0) {
             return "responsive-gallery";
         }
