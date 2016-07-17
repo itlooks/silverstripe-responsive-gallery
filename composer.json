@@ -9,11 +9,11 @@
     "email": "hauff@itlooks.de"
   }],
   "require": {
-    "silverstripe/framework": "~3.2",
-    "silverstripe/cms": "~3.2",
-    "colymba/gridfield-bulk-editing-tools": "*",
-    "undefinedoffset/sortablegridfield" : "*",
-    "unclecheese/display-logic": "*"
+    "silverstripe/framework": "^3.2",
+    "silverstripe/cms": "^3.2",
+    "colymba/gridfield-bulk-editing-tools": "^2.0",
+    "undefinedoffset/sortablegridfield" : "^0.1",
+    "unclecheese/display-logic": "^1.0"
   },
 	"extra": {
 		"installer-name": "responsive-gallery"
