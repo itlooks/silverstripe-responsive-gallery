@@ -1,6 +1,5 @@
           <% if $ShowAllComponents == '1' || $DisplayCarousel %>
-          <!-- Carousel -->
-          <div id="blueimp-gallery-carousel{$ID}" class="blueimp-gallery blueimp-gallery-carousel">
+          <div id="blueimp-gallery-carousel{$ID}" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
               <div class="slides"></div>
               <% if $ShowAllComponents == '1' || $DisplayCarouselTitle %><h3 class="title"></h3><% end_if %>
               <% if $ShowAllComponents == '1' || $DisplayCarouselPrevNext %>
@@ -10,11 +9,9 @@
               <% if $ShowAllComponents == '1' || $DisplayCarouselPlayPause %><a class="play-pause"></a><% end_if %>
               <% if $ShowAllComponents == '1' || $DisplayCarouselIndicator %><ol class="indicator"></ol><% end_if %>
           </div>
-          <!-- /Carousel -->
           <% end_if %>
 
           <% if $ShowAllComponents == '1' || $DisplayModal %>
-          <!-- Modal -->
           <div id="blueimp-gallery{$ID}" class="blueimp-gallery blueimp-gallery-controls borderless" data-use-bootstrap-modal="false">
             <div class="slides"></div>
             <% if $ShowAllComponents == '1' || $DisplayModalTitle %><h3 class="title"></h3><% end_if %>
@@ -26,7 +23,6 @@
             <% if $ShowAllComponents == '1' || $DisplayCarouselPlayPause %><a class="play-pause"></a><% end_if %>
             <% if $ShowAllComponents == '1' || $DisplayCarouselIndicator %><ol class="indicator"></ol><% end_if %>
           </div>
-          <!-- /Modal -->
           <% end_if %>
 
           <div id="links{$ID}" class="responsive-gallery links <% if $ShowAllComponents != '1' %><% if $DisplayModal %><% else %>hide<% end_if %><% end_if %>">

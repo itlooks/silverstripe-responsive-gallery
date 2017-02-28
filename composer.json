@@ -9,8 +9,8 @@
     "email": "hauff@itlooks.de"
   }],
   "require": {
-    "silverstripe/framework": "3.2.*",
-    "silverstripe/cms": "3.2.*",
+    "silverstripe/framework": "3.3.*",
+    "silverstripe/cms": "3.3.*",
     "colymba/gridfield-bulk-editing-tools": "*",
     "undefinedoffset/sortablegridfield" : "*",
     "unclecheese/display-logic": "*"
