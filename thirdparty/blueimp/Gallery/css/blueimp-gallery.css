@@ -32,8 +32,6 @@
   position: fixed;
   z-index: 999999;
   overflow: hidden;
-  background: #000;
-  background: rgba(0, 0, 0, 0.9);
   opacity: 0;
   display: none;
   direction: ltr;
