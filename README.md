@@ -5,12 +5,12 @@
 This module allows you to add and configure responsive galleries to your silverstripe website.
 
 ## Requirements
-* Silverstripe 3.1 or above
+* Silverstripe 3.5
 * [Silverstripe Display Logic Module](https://github.com/unclecheese/silverstripe-display-logic)
 * [Silverstripe SortableGridField Module](https://github.com/UndefinedOffset/SortableGridField)
 * [GridFieldBulkEditingTools](https://github.com/colymba/GridFieldBulkEditingTools)
 * [Bootstrap framework](http://getbootstrap.com/)
-* PHP 5.3
+* PHP 5.3.3 or above
 
 ## Author
 Christoph Hauff - [https://github.com/itlooks/silverstripe-responsive-gallery](https://github.com/itlooks/silverstripe-responsive-gallery)
