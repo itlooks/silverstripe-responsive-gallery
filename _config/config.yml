@@ -1,0 +1,9 @@
+---
+Name: mysite
+After:
+  - 'framework/*'
+  - 'cms/*'
+  - 'mysite/*'
+---
+Requirements:
+  disable_flush_combined: true

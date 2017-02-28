@@ -1,7 +1,22 @@
 <?php
+/**
+ * @author      Christoph Hauff <hauff@itlooks.de>
+ * @copyright   Copyright (c) 2017 Christoph Hauff
+ * @version     3.3.0
+ * @license     Licensed under the MIT license: https://opensource.org/licenses/MIT
+ */
 
-class ResponsiveGalleryExtension extends DataExtension {
-
+/**
+ * Extension class of ResponsiveGallery
+ *
+ * @package silverstripe-responsive-gallery
+ * @subpackage extension
+ */
+class ResponsiveGalleryExtension extends DataExtension
+{
+    /**
+     * @var array
+     */
     public static $db = array(
         'Source' => 'Varchar(2)',
         'ShowAllComponents' => 'Varchar(1)',
@@ -17,15 +32,24 @@ class ResponsiveGalleryExtension extends DataExtension {
         'DisplayModalIndicator' => 'Boolean',
     );
 
+    /**
+     * @var array
+     */
     public static $has_one = array(
         'UploadFolder' => 'Folder',
         'SourceFolder' => 'Folder',
     );
 
+    /**
+     * @var array
+     */
     public static $many_many = array(
         'GalleryImages' => 'ResponsiveGalleryImage',
     );
 
+    /**
+     * @var array
+     */
     static $many_many_extraFields = array( 
 	      'GalleryImages' => array( 
 		        'SortOrder' => "Int",
@@ -35,35 +59,49 @@ class ResponsiveGalleryExtension extends DataExtension {
     /**
      * Handle requirements of a Responsive Gallery object 
      *
-     * @param $id id of calling dataObject or Page
+     * @param int $iId Id of calling dataObject or Page
      */
     public static function getRequirements($iId) {
-        Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery.min.css");
-        Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-indicator.css");
-        Requirements::css("responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-video.css");
-        Requirements::css("responsive-gallery/css/responsive-gallery.css");
-        Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-helper.js");
-        Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery.js");
-        Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery-fullscreen.js");
-        Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery-indicator.js");
-        Requirements::javascript("responsive-gallery/thirdparty/blueimp/Gallery/js/jquery.blueimp-gallery.min.js");
-        Requirements::customScript(<<<JS
-blueimp.Gallery(
-    document.getElementById('links{$iId}').getElementsByTagName('a'),
-    {
-        container: '#blueimp-gallery-carousel{$iId}',
-        carousel: true
-    }
-);
-JS
-          ,
-          $iId
+        $sSpecificJavaScript = "blueimp.Gallery(".
+            "document.getElementById('links".$iId."').getElementsByTagName('a'),".
+            "{container: '#blueimp-gallery-carousel".$iId."', carousel: true}".
+            ");";
+
+        Requirements::combine_files(
+            'responsive-gallery/css/responsive-gallery-combined.css',
+            array(
+                "responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery.min.css",
+                "responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-indicator.css",
+                "responsive-gallery/thirdparty/blueimp/Gallery/css/blueimp-gallery-video.css",
+                "responsive-gallery/css/responsive-gallery.css",
+            )
         );
+
+        Requirements::combine_files(
+            'responsive-gallery/js/responsive-gallery-combined.js',
+            array(
+                "responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-helper.js",
+                "responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery.js",
+                "responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery-fullscreen.js",
+                "responsive-gallery/thirdparty/blueimp/Gallery/js/blueimp-gallery-indicator.js",
+                "responsive-gallery/thirdparty/blueimp/Gallery/js/jquery.blueimp-gallery.min.js"
+            ),
+            array(
+                'async' => true,
+                'defer' => true,
+            )
+        );
+
+        Requirements::customScript($sSpecificJavaScript, $iId);
     }
 
-    public function updateCMSFields(\FieldList $oFields) {
+    /**
+     * Extend cms form
+     *
+     * @param FieldList $oFields
+     */
+    public function updateCMSFields(FieldList $oFields) {
         Folder::find_or_make('responsive-gallery');
-        $aGalleryImagesFields = array();
 
         if ($this->owner->ID > 0) {
             $oFields->addFieldsToTab(
@@ -83,7 +121,9 @@ JS
      *
      * @return array
      */
-    public function getFieldsForImagesTab() {
+    public function getFieldsForImagesTab()
+    {
+        $aFields = array();
 
         $aFields[] = new HeaderField(
             _t(
@@ -228,27 +268,27 @@ JS
      *
      * @return array
      */
-    public function getFieldsForSettingsTab() {
+    public function getFieldsForSettingsTab()
+    {
+        $aFields = array();
 
-        $aFields = array(
-            new OptionsetField(
-                'ShowAllComponents',
-                _t(
-                    'ResponsiveGalleryExtension.COMPONENTSETTINGS_LABEL',
-                    'Display Components'
-                ),
-                $source = array(
-                    "1" => _t(
-                      'ResponsiveGalleryExtension.SHOWALLCOMPONENTS_LABEL',
-                      'Display all components'
-                    ),
-                    "0" => _t(
-                      'ResponsiveGalleryExtension.SHOWCUSTOMIZEDCOMPONENTS_LABEL',
-                      'Customized ...'
-                    ),
-                ),
-               $value = "1"
+        $aFields[] = new OptionsetField(
+            'ShowAllComponents',
+            _t(
+                'ResponsiveGalleryExtension.COMPONENTSETTINGS_LABEL',
+                'Display Components'
             ),
+            $source = array(
+                "1" => _t(
+                  'ResponsiveGalleryExtension.SHOWALLCOMPONENTS_LABEL',
+                  'Display all components'
+                ),
+                "0" => _t(
+                  'ResponsiveGalleryExtension.SHOWCUSTOMIZEDCOMPONENTS_LABEL',
+                  'Customized ...'
+                ),
+            ),
+           $value = "1"
         );
 
         $aFields[] = DisplayLogicWrapper::create(
@@ -394,7 +434,8 @@ JS
      *
      * @return \DataList|\ManyManyList
      */
-    public function getImages() {
+    public function getImages()
+    {
         if($this->owner->Source == "sf") {
             return DataObject::get("Image", "ParentID = '".$this->owner->SourceFolderID."'");
         } else {
@@ -407,7 +448,8 @@ JS
      *
      * @return bool
      */
-    public function isSourcefolderSelected() {
+    public function isSourcefolderSelected()
+    {
         return ($this->owner->SourceFolderID > 0);
     }
 
@@ -416,7 +458,8 @@ JS
      *
      * @return int 
      */
-    public function countImages() {
+    public function countImages()
+    {
         return $this->getImages()->count();
     }
 
@@ -425,7 +468,8 @@ JS
      *
      * @return string
      */
-    public function getUploadFolder() {
+    public function getUploadFolder()
+    {
         if ($this->owner->UploadFolder()->ID == 0) {
             return "responsive-gallery";
         }
